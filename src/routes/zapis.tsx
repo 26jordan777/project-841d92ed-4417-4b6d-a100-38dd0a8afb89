@@ -35,7 +35,7 @@ export const Route = createFileRoute("/zapis")({
   component: BookingPage,
 });
 
-type Errors = Partial<Record<"service" | "date" | "time" | "phone" | "name" | "comment" | "form", string>>;
+type Errors = Partial<Record<"service" | "date" | "time" | "phone" | "name" | "comment" | "form", string | undefined>>;
 
 function formatDay(date: string) {
   const d = new Date(`${date}T12:00:00Z`);
@@ -157,7 +157,7 @@ function BookingPage() {
 
         <form onSubmit={onSubmit} noValidate className="mt-12 grid gap-px border border-border bg-border">
           {/* 1. Service */}
-          <fieldset className="bg-card p-6 md:p-8">
+          <fieldset className="min-w-0 bg-card p-6 md:p-8">
             <legend className="sr-only">Услуга</legend>
             <p className={fieldLabel}>01 · Услуга</p>
             <div className="mt-4 grid gap-2 sm:grid-cols-2">
@@ -166,7 +166,10 @@ function BookingPage() {
                   key={s}
                   type="button"
                   aria-pressed={service === s}
-                  onClick={() => setService(s)}
+                  onClick={() => {
+                    setService(s);
+                    setErrors((e) => ({ ...e, service: undefined }));
+                  }}
                   className={cn(
                     "border px-4 py-3 text-left text-sm transition-colors",
                     service === s
@@ -182,7 +185,7 @@ function BookingPage() {
           </fieldset>
 
           {/* 2. Date & time */}
-          <fieldset className="bg-card p-6 md:p-8">
+          <fieldset className="min-w-0 bg-card p-6 md:p-8">
             <legend className="sr-only">Дата и время</legend>
             <p className={fieldLabel}>02 · Дата</p>
             <div className="-mx-6 mt-4 flex gap-2 overflow-x-auto px-6 pb-2 md:-mx-8 md:px-8">
@@ -202,6 +205,7 @@ function BookingPage() {
                     onClick={() => {
                       setDate(d);
                       setTime("");
+                      setErrors((e) => ({ ...e, date: undefined }));
                     }}
                     className={cn(
                       "flex w-16 shrink-0 flex-col items-center border py-3 transition-colors",
@@ -227,7 +231,10 @@ function BookingPage() {
                     key={t}
                     type="button"
                     aria-pressed={time === t}
-                    onClick={() => setTime(t)}
+                    onClick={() => {
+                      setTime(t);
+                      setErrors((e) => ({ ...e, time: undefined }));
+                    }}
                     className={cn(
                       "border py-2.5 font-mono text-sm transition-colors",
                       time === t ? "border-primary bg-primary text-primary-foreground" : "border-border bg-background hover:border-steel",
@@ -242,7 +249,7 @@ function BookingPage() {
           </fieldset>
 
           {/* 3. Contacts */}
-          <fieldset className="grid gap-5 bg-card p-6 md:p-8">
+          <fieldset className="min-w-0 grid gap-5 bg-card p-6 md:p-8">
             <legend className="sr-only">Контакты</legend>
             <p className={fieldLabel}>04 · Контакты</p>
             <div className="grid gap-2">
@@ -254,7 +261,10 @@ function BookingPage() {
                 autoComplete="tel"
                 placeholder="+7 900 123-45-67"
                 value={phone}
-                onChange={(e) => setPhone(e.target.value)}
+                onChange={(e) => {
+                  setPhone(e.target.value);
+                  setErrors((er) => ({ ...er, phone: undefined }));
+                }}
                 aria-invalid={!!errors.phone}
                 className="h-12 rounded-none bg-background font-mono text-base"
                 maxLength={30}
