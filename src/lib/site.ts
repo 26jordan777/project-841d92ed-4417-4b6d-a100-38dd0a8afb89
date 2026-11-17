@@ -16,10 +16,10 @@ export const SITE = {
   ],
   mapEmbed:
     "https://yandex.ru/map-widget/v1/?text=" +
-    encodeURIComponent("Краснодар, территория Перспективная, 315") +
+    encodeURIComponent("Краснодар, посёлок Индустриальный, территория Перспективная, 315") +
     "&z=16",
   mapLink:
-    "https://yandex.ru/maps/?text=" + encodeURIComponent("Краснодар, территория Перспективная, 315"),
+    "https://yandex.ru/maps/?text=" + encodeURIComponent("Краснодар, посёлок Индустриальный, территория Перспективная, 315"),
 };
 
 export type Service = {
