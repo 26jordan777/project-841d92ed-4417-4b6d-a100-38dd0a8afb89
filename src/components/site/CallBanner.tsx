@@ -1,4 +1,4 @@
-import { Phone, MapPin } from "lucide-react";
+import { Phone, MapPin, CalendarCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SITE } from "@/lib/site";
 import { Link } from "@tanstack/react-router";
@@ -11,20 +11,22 @@ export function CallBanner() {
         <div>
           <p className="eyebrow">Запись на ремонт</p>
           <h2 className="mt-3 text-3xl font-bold md:text-4xl">
-            Позвоните — подберём<br className="hidden sm:block" /> удобное время
+            Выберите удобное время<br className="hidden sm:block" /> онлайн или по телефону
           </h2>
           <p className="mt-3 flex items-center gap-2 text-sm text-muted-foreground">
             <MapPin className="h-4 w-4 text-primary" /> {SITE.address}
           </p>
         </div>
-        <div className="flex flex-col gap-3 sm:flex-row">
+        <div className="flex flex-col gap-3 sm:flex-row md:flex-col lg:flex-row">
           <Button asChild variant="ember" size="xl">
+            <Link to="/zapis">
+              <CalendarCheck /> Записаться онлайн
+            </Link>
+          </Button>
+          <Button asChild variant="steel" size="xl">
             <a href={SITE.phoneHref}>
               <Phone /> {SITE.phone}
             </a>
-          </Button>
-          <Button asChild variant="steel" size="xl">
-            <Link to="/kontakty">Как добраться</Link>
           </Button>
         </div>
       </div>
