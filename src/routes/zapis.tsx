@@ -188,7 +188,7 @@ function BookingPage() {
           <fieldset className="min-w-0 bg-card p-6 md:p-8">
             <legend className="sr-only">Дата и время</legend>
             <p className={fieldLabel}>02 · Дата</p>
-            <div className="-mx-6 mt-4 flex gap-2 overflow-x-auto px-6 pb-2 md:-mx-8 md:px-8">
+            <div className="-mx-6 mt-4 flex gap-2 overflow-x-auto px-6 pb-2 md:mx-0 md:flex-wrap md:overflow-visible md:px-0 md:pb-0">
               {!now &&
                 Array.from({ length: 7 }).map((_, i) => (
                   <div key={i} className="h-[76px] w-16 shrink-0 animate-pulse border border-border bg-background" />
@@ -212,9 +212,9 @@ function BookingPage() {
                       active ? "border-primary bg-primary text-primary-foreground" : "border-border bg-background hover:border-steel",
                     )}
                   >
-                    <span className="font-mono text-[10px] uppercase tracking-widest opacity-80">{f.weekday}</span>
+                    <span className={cn("font-mono text-[10px] uppercase tracking-widest", !active && "text-muted-foreground")}>{f.weekday}</span>
                     <span className="font-mono text-xl font-bold">{f.day}</span>
-                    <span className="text-[11px] opacity-80">{f.month}</span>
+                    <span className={cn("text-[11px]", !active && "text-muted-foreground")}>{f.month}</span>
                   </button>
                 );
               })}
