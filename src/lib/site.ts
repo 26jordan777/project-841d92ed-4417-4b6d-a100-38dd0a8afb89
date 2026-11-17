@@ -22,6 +22,20 @@ export const SITE = {
     "https://yandex.ru/maps/?text=" + encodeURIComponent("Краснодар, посёлок Индустриальный, территория Перспективная, 315"),
 };
 
+/** Opening hours by JS weekday (0 = Sunday). `close` is the hour the service closes; null = day off. */
+export const WORK_HOURS: Record<number, { open: number; close: number } | null> = {
+  0: null,
+  1: { open: 9, close: 20 },
+  2: { open: 9, close: 20 },
+  3: { open: 9, close: 20 },
+  4: { open: 9, close: 20 },
+  5: { open: 9, close: 20 },
+  6: { open: 10, close: 18 },
+};
+
+/** How many days ahead clients can book online. */
+export const BOOKING_DAYS_AHEAD = 14;
+
 export type Service = {
   icon: LucideIcon;
   title: string;
@@ -88,3 +102,6 @@ export const SERVICES: Service[] = [
     items: ["Сезонная замена", "Балансировка", "Ремонт проколов", "Хранение шин"],
   },
 ];
+
+export const OTHER_SERVICE = "Другое / не знаю, что сломалось";
+export const BOOKING_SERVICES: string[] = [...SERVICES.map((s) => s.title), OTHER_SERVICE];
