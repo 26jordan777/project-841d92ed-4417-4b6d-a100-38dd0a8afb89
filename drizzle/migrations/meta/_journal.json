@@ -8,6 +8,13 @@
       "when": 1794910579537,
       "tag": "0000_migration",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1794941444715,
+      "tag": "0001_booking_unique_slot",
+      "breakpoints": true
     }
   ]
 }

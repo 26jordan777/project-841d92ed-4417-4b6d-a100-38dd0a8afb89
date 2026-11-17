@@ -9,8 +9,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import { BOOKING_SERVICES, SITE } from "@/lib/site";
-import { availableSlots, bookableDays, bookingSchema } from "@/lib/booking";
-import { createBooking } from "@/lib/booking.functions";
+import { availableSlots, bookableDays, bookingSchema, type TakenSlots } from "@/lib/booking";
+import { createBooking, getTakenSlots } from "@/lib/booking.functions";
 
 const searchSchema = z.object({ service: z.string().optional().catch(undefined) });
 
@@ -52,6 +52,7 @@ const fieldLabel = "font-mono text-xs uppercase tracking-widest text-muted-foreg
 function BookingPage() {
   const search = Route.useSearch();
   const submit = useServerFn(createBooking);
+  const fetchTaken = useServerFn(getTakenSlots);
 
   const [now, setNow] = useState<Date | null>(null);
   useEffect(() => setNow(new Date()), []);
@@ -68,8 +69,35 @@ function BookingPage() {
   const [errors, setErrors] = useState<Errors>({});
   const [pending, setPending] = useState(false);
   const [done, setDone] = useState(false);
+  const [taken, setTaken] = useState<TakenSlots | null>(null);
 
-  const days = useMemo(() => (now ? bookableDays(now) : []), [now]);
+  async function refreshTaken() {
+    try {
+      const t = await fetchTaken();
+      setTaken(t);
+      return t;
+    } catch {
+      setTaken((prev) => prev ?? {});
+      return null;
+    }
+  }
+
+  useEffect(() => {
+    void refreshTaken();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // If someone else took the chosen time meanwhile, drop the selection.
+  useEffect(() => {
+    if (date && time && taken?.[date]?.includes(time)) {
+      setTime("");
+      setErrors((e) => ({ ...e, time: "Это время только что заняли — выберите другое." }));
+    }
+  }, [taken, date, time]);
+
+  const ready = now !== null && taken !== null;
+  const busy = useMemo(() => new Set(taken?.[date] ?? []), [taken, date]);
+  const days = useMemo(() => (ready ? bookableDays(now, taken) : []), [ready, now, taken]);
   const slots = useMemo(() => (now && date ? availableSlots(date, now) : []), [now, date]);
 
   async function onSubmit(e: FormEvent) {
@@ -93,6 +121,7 @@ function BookingPage() {
     } catch (err) {
       setErrors({ form: err instanceof Error ? err.message : "Не удалось отправить заявку." });
       setNow(new Date());
+      await refreshTaken();
     } finally {
       setPending(false);
     }
@@ -133,6 +162,7 @@ function BookingPage() {
                 setTime("");
                 setComment("");
                 setNow(new Date());
+                void refreshTaken();
               }}
             >
               Новая запись
@@ -189,7 +219,7 @@ function BookingPage() {
             <legend className="sr-only">Дата и время</legend>
             <p className={fieldLabel}>02 · Дата</p>
             <div className="-mx-6 mt-4 flex gap-2 overflow-x-auto px-6 pb-2 md:mx-0 md:flex-wrap md:overflow-visible md:px-0 md:pb-0">
-              {!now &&
+              {!ready &&
                 Array.from({ length: 7 }).map((_, i) => (
                   <div key={i} className="h-[76px] w-16 shrink-0 animate-pulse border border-border bg-background" />
                 ))}
@@ -205,7 +235,8 @@ function BookingPage() {
                     onClick={() => {
                       setDate(d);
                       setTime("");
-                      setErrors((e) => ({ ...e, date: undefined }));
+                      setErrors((e) => ({ ...e, date: undefined, time: undefined }));
+                      void refreshTaken();
                     }}
                     className={cn(
                       "flex w-16 shrink-0 flex-col items-center border py-3 transition-colors",
@@ -226,23 +257,33 @@ function BookingPage() {
               <p className="mt-4 text-sm text-muted-foreground">Сначала выберите дату.</p>
             ) : (
               <div className="mt-4 grid grid-cols-4 gap-2 sm:grid-cols-6">
-                {slots.map((t) => (
-                  <button
-                    key={t}
-                    type="button"
-                    aria-pressed={time === t}
-                    onClick={() => {
-                      setTime(t);
-                      setErrors((e) => ({ ...e, time: undefined }));
-                    }}
-                    className={cn(
-                      "border py-2.5 font-mono text-sm transition-colors",
-                      time === t ? "border-primary bg-primary text-primary-foreground" : "border-border bg-background hover:border-steel",
-                    )}
-                  >
-                    {t}
-                  </button>
-                ))}
+                {slots.map((t) => {
+                  const isBusy = busy.has(t);
+                  return (
+                    <button
+                      key={t}
+                      type="button"
+                      disabled={isBusy}
+                      aria-pressed={time === t}
+                      aria-label={isBusy ? `${t} — занято` : t}
+                      onClick={() => {
+                        setTime(t);
+                        setErrors((e) => ({ ...e, time: undefined, form: undefined }));
+                      }}
+                      className={cn(
+                        "flex flex-col items-center border py-2.5 font-mono text-sm transition-colors",
+                        isBusy
+                          ? "cursor-not-allowed border-border/60 bg-muted/40 text-muted-foreground/60 line-through"
+                          : time === t
+                            ? "border-primary bg-primary text-primary-foreground"
+                            : "border-border bg-background hover:border-steel",
+                      )}
+                    >
+                      {t}
+                      {isBusy && <span className="text-[10px] uppercase tracking-wider no-underline">занято</span>}
+                    </button>
+                  );
+                })}
               </div>
             )}
             {errors.time && <p className="mt-3 text-sm text-destructive">{errors.time}</p>}
