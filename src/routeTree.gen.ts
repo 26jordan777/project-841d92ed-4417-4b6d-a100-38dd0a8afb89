@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as KontaktyRouteImport } from './routes/kontakty'
 import { Route as UslugiRouteImport } from './routes/uslugi'
+import { Route as ZapisRouteImport } from './routes/zapis'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -28,35 +29,44 @@ const UslugiRoute = UslugiRouteImport.update({
   path: '/uslugi',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ZapisRoute = ZapisRouteImport.update({
+  id: '/zapis',
+  path: '/zapis',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/kontakty': typeof KontaktyRoute
   '/uslugi': typeof UslugiRoute
+  '/zapis': typeof ZapisRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/kontakty': typeof KontaktyRoute
   '/uslugi': typeof UslugiRoute
+  '/zapis': typeof ZapisRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/kontakty': typeof KontaktyRoute
   '/uslugi': typeof UslugiRoute
+  '/zapis': typeof ZapisRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/kontakty' | '/uslugi'
+  fullPaths: '/' | '/kontakty' | '/uslugi' | '/zapis'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/kontakty' | '/uslugi'
-  id: '__root__' | '/' | '/kontakty' | '/uslugi'
+  to: '/' | '/kontakty' | '/uslugi' | '/zapis'
+  id: '__root__' | '/' | '/kontakty' | '/uslugi' | '/zapis'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   KontaktyRoute: typeof KontaktyRoute
   UslugiRoute: typeof UslugiRoute
+  ZapisRoute: typeof ZapisRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -82,6 +92,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UslugiRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/zapis': {
+      id: '/zapis'
+      path: '/zapis'
+      fullPath: '/zapis'
+      preLoaderRoute: typeof ZapisRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -89,6 +106,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   KontaktyRoute: KontaktyRoute,
   UslugiRoute: UslugiRoute,
+  ZapisRoute: ZapisRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

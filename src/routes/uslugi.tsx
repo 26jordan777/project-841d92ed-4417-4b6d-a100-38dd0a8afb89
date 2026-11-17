@@ -1,5 +1,5 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { Check } from "lucide-react";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { ArrowRight, Check } from "lucide-react";
 import { CallBanner } from "@/components/site/CallBanner";
 import { SERVICES } from "@/lib/site";
 import diagImg from "@/assets/diagnostics.jpg";
@@ -78,6 +78,13 @@ function ServicesPage() {
                   </li>
                 ))}
               </ul>
+              <Link
+                to="/zapis"
+                search={{ service: s.title }}
+                className="mt-6 inline-flex items-center gap-2 self-start font-mono text-xs uppercase tracking-widest text-primary hover:underline"
+              >
+                Записаться на эту услугу <ArrowRight className="h-4 w-4" />
+              </Link>
             </article>
           ))}
         </div>

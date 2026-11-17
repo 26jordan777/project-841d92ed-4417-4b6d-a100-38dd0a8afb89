@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, Phone, ShieldCheck, Clock, BadgeRussianRuble, Wrench } from "lucide-react";
+import { ArrowRight, CalendarCheck, ShieldCheck, Clock, BadgeRussianRuble, Wrench } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { CallBanner } from "@/components/site/CallBanner";
 import { SERVICES, SITE } from "@/lib/site";
@@ -42,7 +42,7 @@ const ADVANTAGES = [
 ];
 
 const STEPS = [
-  { n: "01", title: "Звонок", text: "Описываете проблему, назначаем время." },
+  { n: "01", title: "Запись", text: "Оставляете заявку онлайн или звоните — подтверждаем время." },
   { n: "02", title: "Диагностика", text: "Находим причину и называем стоимость." },
   { n: "03", title: "Ремонт", text: "Выполняем работы после согласования." },
   { n: "04", title: "Выдача", text: "Показываем замененные детали, даём гарантию." },
@@ -77,9 +77,9 @@ function Index() {
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Button asChild variant="ember" size="xl">
-                <a href={SITE.phoneHref}>
-                  <Phone /> Записаться
-                </a>
+                <Link to="/zapis">
+                  <CalendarCheck /> Записаться онлайн
+                </Link>
               </Button>
               <Button asChild variant="steel" size="xl">
                 <Link to="/uslugi">

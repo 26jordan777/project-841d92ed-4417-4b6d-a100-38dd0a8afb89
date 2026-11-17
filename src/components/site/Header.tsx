@@ -7,6 +7,7 @@ import { SITE } from "@/lib/site";
 const NAV = [
   { to: "/", label: "Главная" },
   { to: "/uslugi", label: "Услуги и цены" },
+  { to: "/zapis", label: "Запись" },
   { to: "/kontakty", label: "Контакты" },
 ] as const;
 
