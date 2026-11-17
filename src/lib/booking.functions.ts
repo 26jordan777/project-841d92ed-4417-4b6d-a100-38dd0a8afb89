@@ -2,7 +2,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { availableSlots, bookingSchema, normalizePhone } from "@/lib/booking";
 
 export const createBooking = createServerFn({ method: "POST" })
-  .inputValidator((input: unknown) => bookingSchema.parse(input))
+  .validator((input: unknown) => bookingSchema.parse(input))
   .handler(async ({ data }) => {
     // Bots fill the hidden field; pretend success without storing anything.
     if (data.website) return { ok: true as const };
