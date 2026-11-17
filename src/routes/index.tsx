@@ -96,12 +96,9 @@ function Index() {
 
       {/* Stats */}
       <section className="border-y border-border bg-card">
-        <div className="mx-auto grid max-w-7xl grid-cols-2 md:grid-cols-4">
-          {STATS.map((s, i) => (
-            <div
-              key={s.label}
-              className={`px-5 py-8 ${i % 2 === 0 ? "border-r" : ""} ${i < 2 ? "border-b md:border-b-0" : ""} md:border-r border-border last:border-r-0`}
-            >
+        <div className="mx-auto grid max-w-7xl grid-cols-2 gap-px bg-border md:grid-cols-4">
+          {STATS.map((s) => (
+            <div key={s.label} className="bg-card px-5 py-8">
               <p className="font-mono text-2xl font-bold text-primary md:text-4xl">{s.value}</p>
               <p className="mt-1 text-sm text-muted-foreground">{s.label}</p>
             </div>
