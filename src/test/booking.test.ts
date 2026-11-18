@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { availableSlots, bookableDays, normalizePhone, slotsForDate } from "@/lib/booking";
+import { availableSlots, bookableDays, freeSlots, isSlotFree, normalizePhone, slotsForDate } from "@/lib/booking";
 
 // 2026-11-17 is a Tuesday. 10:30 Krasnodar time = 07:30 UTC.
 const tuesdayMorning = new Date("2026-11-17T07:30:00Z");
@@ -43,5 +43,24 @@ describe("online booking rules", () => {
     expect(normalizePhone("+7 900 123 45 67")).toBe("+79001234567");
     expect(normalizePhone("9001234567")).toBe("+79001234567");
     expect(normalizePhone("12345")).toBeNull();
+  });
+});
+
+describe("slot availability", () => {
+  const taken = { "2026-11-18": ["09:00", "14:00"] };
+
+  it("does not offer a time another client already booked", () => {
+    const s = freeSlots("2026-11-18", tuesdayMorning, taken);
+    expect(s).not.toContain("09:00");
+    expect(s).not.toContain("14:00");
+    expect(s).toContain("10:00");
+    expect(isSlotFree("2026-11-18", "14:00", tuesdayMorning, taken)).toBe(false);
+    expect(isSlotFree("2026-11-18", "15:00", tuesdayMorning, taken)).toBe(true);
+  });
+
+  it("hides a day once every slot on it is booked", () => {
+    const full = { "2026-11-18": slotsForDate("2026-11-18") };
+    expect(bookableDays(tuesdayMorning, full)).not.toContain("2026-11-18");
+    expect(bookableDays(tuesdayMorning, {})).toContain("2026-11-18");
   });
 });

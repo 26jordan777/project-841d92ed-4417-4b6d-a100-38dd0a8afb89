@@ -97,7 +97,7 @@ function BookingPage() {
 
   const ready = now !== null && taken !== null;
   const busy = useMemo(() => new Set(taken?.[date] ?? []), [taken, date]);
-  const days = useMemo(() => (ready ? bookableDays(now, taken) : []), [ready, now, taken]);
+  const days = useMemo(() => (now && taken ? bookableDays(now, taken) : []), [now, taken]);
   const slots = useMemo(() => (now && date ? availableSlots(date, now) : []), [now, date]);
 
   async function onSubmit(e: FormEvent) {
@@ -273,14 +273,14 @@ function BookingPage() {
                       className={cn(
                         "flex flex-col items-center border py-2.5 font-mono text-sm transition-colors",
                         isBusy
-                          ? "cursor-not-allowed border-border/60 bg-muted/40 text-muted-foreground/60 line-through"
+                          ? "cursor-not-allowed border-border/60 bg-muted/40 text-muted-foreground/60"
                           : time === t
                             ? "border-primary bg-primary text-primary-foreground"
                             : "border-border bg-background hover:border-steel",
                       )}
                     >
-                      {t}
-                      {isBusy && <span className="text-[10px] uppercase tracking-wider no-underline">занято</span>}
+                      <span className={cn(isBusy && "line-through")}>{t}</span>
+                      {isBusy && <span className="text-[10px] uppercase tracking-wider">занято</span>}
                     </button>
                   );
                 })}
