@@ -31,5 +31,6 @@ use the editor.
 
 ## Project rules
 - Business contacts, hours and the services/price list live in `src/lib/site.ts`; pages read from it so details change in one place.
-- Shared header/footer wrap `<Outlet />` in `src/routes/__root.tsx`; each content section is its own route (/, /uslugi, /zapis, /kontakty).
+- Shared header/footer wrap `<Outlet />` in `src/routes/__root.tsx`; each content section is its own route (/, /uslugi, /zapis, /kontakty); staff pages /auth and /admin are noindex and reached only via a deliberately subtle link on /kontakty.
 - Online booking: time-slot rules live in `src/lib/booking.ts` (pure, tested) and are re-checked in the `createBooking` server function, which stores requests in `booking_requests` via the admin client; the table has RLS on and no public policies so visitors cannot read bookings. One active booking per date+time is enforced by a partial unique index (status <> 'cancelled'), so races are caught by the database; `getTakenSlots` exposes only busy date/times to the form.
+- Staff admin: public sign-up is disabled and the owner creates accounts in Cloud → Users; a trigger on auth.users grants every new account the `admin` role in `user_roles`, so never re-enable public sign-up without removing that trigger. `/admin` sits under the managed `_authenticated` gate and reads/updates `booking_requests` through `requireSupabaseAuth` server functions that check `has_role` and rely on admin-only RLS policies.

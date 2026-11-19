@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { MapPin, Phone, Clock, Navigation } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SITE } from "@/lib/site";
@@ -71,6 +71,16 @@ function ContactsPage() {
             allowFullScreen
           />
         </div>
+      </div>
+
+      {/* Staff entrance: intentionally subtle so visitors overlook it. */}
+      <div className="mt-8 flex justify-end">
+        <Link
+          to="/auth"
+          className="font-mono text-[10px] lowercase tracking-widest text-muted-foreground/25 transition-colors hover:text-muted-foreground"
+        >
+          персонал
+        </Link>
       </div>
     </section>
   );

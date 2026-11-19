@@ -19,4 +19,10 @@ describe("App routing", () => {
     const router = createRouter({ routeTree, context: { queryClient: new QueryClient() } });
     expect(router.matchRoutes("/zapis").at(-1)?.routeId).toBe("/zapis");
   });
+
+  it("matches the staff sign-in and bookings admin pages", () => {
+    const router = createRouter({ routeTree, context: { queryClient: new QueryClient() } });
+    expect(router.matchRoutes("/auth").at(-1)?.routeId).toBe("/auth");
+    expect(router.matchRoutes("/admin").at(-1)?.routeId).toBe("/_authenticated/admin");
+  });
 });
