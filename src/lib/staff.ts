@@ -14,7 +14,7 @@ export async function sectionPasswordMatches(input: string, expected: string): P
   const x = new Uint8Array(a);
   const y = new Uint8Array(b);
   let diff = 0;
-  for (let i = 0; i < x.length; i++) diff |= x[i] ^ y[i];
+  for (let i = 0; i < x.length; i++) diff |= (x[i] ?? 0) ^ (y[i] ?? 0);
   return diff === 0;
 }
 
