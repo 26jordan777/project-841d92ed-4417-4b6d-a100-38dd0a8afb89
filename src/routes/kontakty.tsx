@@ -6,15 +6,15 @@ import { SITE } from "@/lib/site";
 export const Route = createFileRoute("/kontakty")({
   head: () => ({
     meta: [
-      { title: "Контакты — автосервис «Перспектива Авто», тер. Перспективная, 315" },
+      { title: "Контакты — «Лаборатория АКПП», Краснодар, ул. Щорса, 50/1" },
       {
         name: "description",
-        content: "Адрес, телефон и режим работы автосервиса в Индустриальном районе Краснодара, тер. Перспективная, 315.",
+        content: "Адрес, телефон и режим работы сервиса по ремонту АКПП в Краснодаре: мкр. Центральный, ул. Щорса, 50/1.",
       },
-      { property: "og:title", content: "Контакты — «Перспектива Авто», Краснодар" },
+      { property: "og:title", content: "Контакты — «Лаборатория АКПП», Краснодар" },
       {
         property: "og:description",
-        content: "Краснодар, Индустриальный, территория Перспективная, 315. Телефон и схема проезда.",
+        content: "Краснодар, микрорайон Центральный, улица Щорса, 50/1. Телефон +7 (961) 519-72-95 и схема проезда.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -64,7 +64,7 @@ function ContactsPage() {
 
         <div className="relative min-h-[420px] border border-border bg-card">
           <iframe
-            title="Карта: автосервис на территории Перспективная, 315"
+            title="Карта: Лаборатория АКПП, ул. Щорса, 50/1"
             src={SITE.mapEmbed}
             className="absolute inset-0 h-full w-full"
             loading="lazy"

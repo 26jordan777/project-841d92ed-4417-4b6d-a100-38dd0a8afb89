@@ -9,17 +9,17 @@ describe("online booking rules", () => {
     expect(slotsForDate("2026-11-22")).toEqual([]);
   });
 
-  it("offers 9:00–19:00 slots on weekdays (closes at 20:00)", () => {
-    const s = slotsForDate("2026-11-18");
-    expect(s[0]).toBe("09:00");
-    expect(s.at(-1)).toBe("19:00");
-    expect(s).toHaveLength(11);
+  it("has no slots on Saturday (day off)", () => {
+    expect(slotsForDate("2026-11-21")).toEqual([]);
   });
 
-  it("offers 10:00–17:00 slots on Saturday (closes at 18:00)", () => {
-    const s = slotsForDate("2026-11-21");
+  it("offers 10:00–18:00 slots on weekdays (open 10:00, closes at 19:00)", () => {
+    const s = slotsForDate("2026-11-18");
     expect(s[0]).toBe("10:00");
-    expect(s.at(-1)).toBe("17:00");
+    expect(s.at(-1)).toBe("18:00");
+    expect(s).toHaveLength(9);
+    expect(s).not.toContain("09:00");
+    expect(s).not.toContain("19:00");
   });
 
   it("hides slots that already passed today", () => {
@@ -34,8 +34,10 @@ describe("online booking rules", () => {
     expect(availableSlots("2026-12-01", tuesdayMorning).length).toBeGreaterThan(0);
   });
 
-  it("never lists Sundays as bookable days", () => {
+  it("never lists Saturdays or Sundays as bookable days", () => {
+    expect(bookableDays(tuesdayMorning)).not.toContain("2026-11-21");
     expect(bookableDays(tuesdayMorning)).not.toContain("2026-11-22");
+    expect(bookableDays(tuesdayMorning)).toContain("2026-11-20");
   });
 
   it("normalises Russian phone numbers", () => {
@@ -47,13 +49,13 @@ describe("online booking rules", () => {
 });
 
 describe("slot availability", () => {
-  const taken = { "2026-11-18": ["09:00", "14:00"] };
+  const taken = { "2026-11-18": ["10:00", "14:00"] };
 
   it("does not offer a time another client already booked", () => {
     const s = freeSlots("2026-11-18", tuesdayMorning, taken);
-    expect(s).not.toContain("09:00");
+    expect(s).not.toContain("10:00");
     expect(s).not.toContain("14:00");
-    expect(s).toContain("10:00");
+    expect(s).toContain("11:00");
     expect(isSlotFree("2026-11-18", "14:00", tuesdayMorning, taken)).toBe(false);
     expect(isSlotFree("2026-11-18", "15:00", tuesdayMorning, taken)).toBe(true);
   });

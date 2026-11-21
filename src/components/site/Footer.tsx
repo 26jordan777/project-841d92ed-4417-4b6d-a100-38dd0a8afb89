@@ -9,7 +9,7 @@ export function Footer() {
         <div>
           <p className="font-mono text-lg font-bold tracking-widest">{SITE.name.toUpperCase()}</p>
           <p className="mt-3 max-w-xs text-sm text-muted-foreground">
-            Ремонт и обслуживание автомобилей в Индустриальном районе Краснодара.
+            Ремонт АКПП, DSG, вариаторов, PowerShift и раздаточных коробок в Краснодаре.
           </p>
         </div>
         <div>

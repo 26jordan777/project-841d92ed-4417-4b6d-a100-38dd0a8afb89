@@ -19,12 +19,12 @@ export function Header() {
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-5">
         <Link to="/" className="flex items-center gap-3" onClick={() => setOpen(false)}>
           <span className="grid h-9 w-9 place-items-center bg-primary font-mono text-sm font-bold text-primary-foreground">
-            ПА
+            {SITE.monogram}
           </span>
           <span className="leading-tight">
             <span className="block font-mono text-sm font-bold tracking-widest">{SITE.short}</span>
             <span className="block font-mono text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
-              автосервис
+              {SITE.tagline}
             </span>
           </span>
         </Link>

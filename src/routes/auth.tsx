@@ -11,10 +11,10 @@ import { Label } from "@/components/ui/label";
 export const Route = createFileRoute("/auth")({
   head: () => ({
     meta: [
-      { title: "Служебный вход — «Перспектива Авто»" },
+      { title: "Служебный вход — «Лаборатория АКПП»" },
       { name: "description", content: "Вход для сотрудников автосервиса." },
       { name: "robots", content: "noindex, nofollow" },
-      { property: "og:title", content: "Служебный вход — «Перспектива Авто»" },
+      { property: "og:title", content: "Служебный вход — «Лаборатория АКПП»" },
       { property: "og:description", content: "Вход для сотрудников автосервиса." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
