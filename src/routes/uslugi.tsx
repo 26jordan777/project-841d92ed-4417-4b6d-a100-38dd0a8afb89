@@ -54,8 +54,8 @@ function ServicesPage() {
         <div className="grid gap-6 md:grid-cols-2">
           {SERVICES.map((s, i) => (
             <article key={s.title} className="flex flex-col border border-border bg-card p-6 md:p-8">
-              <div className="flex items-start justify-between gap-4">
-                <div className="flex items-center gap-4">
+              <div className="flex flex-wrap items-start justify-between gap-4">
+                <div className="flex min-w-0 items-center gap-4">
                   <span className="grid h-12 w-12 shrink-0 place-items-center border border-steel">
                     <s.icon className="h-6 w-6 text-primary" />
                   </span>
@@ -63,7 +63,7 @@ function ServicesPage() {
                     <span className="font-mono text-xs text-muted-foreground">
                       {String(i + 1).padStart(2, "0")}
                     </span>
-                    <h2 className="text-xl font-bold leading-tight">{s.title}</h2>
+                    <h2 className="break-words text-xl font-bold leading-tight">{s.title}</h2>
                   </div>
                 </div>
                 <span className="shrink-0 bg-primary px-3 py-1 font-mono text-xs font-bold text-primary-foreground">
