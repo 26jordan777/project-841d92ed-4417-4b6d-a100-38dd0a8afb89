@@ -49,13 +49,32 @@ export function availableSlots(date: string, now: Date): string[] {
   return slots.filter((s) => Number(s.slice(0, 2)) > hour);
 }
 
+/** Already booked times, keyed by date ("YYYY-MM-DD" -> ["10:00", ...]). */
+export type TakenSlots = Record<string, string[]>;
+
+/** Slots still open for a new booking: available by time and not taken by another client. */
+export function freeSlots(date: string, now: Date, taken: TakenSlots = {}): string[] {
+  const busy = new Set(taken[date] ?? []);
+  return availableSlots(date, now).filter((s) => !busy.has(s));
+}
+
+export function isSlotFree(date: string, time: string, now: Date, taken: TakenSlots = {}): boolean {
+  return freeSlots(date, now, taken).includes(time);
+}
+
+/** Booking window as [first, last] dates in Krasnodar time. */
+export function bookingWindow(now: Date): { from: string; to: string } {
+  const { date: today } = localNow(now);
+  return { from: today, to: addDays(today, BOOKING_DAYS_AHEAD) };
+}
+
 /** Upcoming dates (from today) that still have free slots. */
-export function bookableDays(now: Date): string[] {
+export function bookableDays(now: Date, taken: TakenSlots = {}): string[] {
   const { date: today } = localNow(now);
   const days: string[] = [];
   for (let i = 0; i <= BOOKING_DAYS_AHEAD; i++) {
     const d = addDays(today, i);
-    if (availableSlots(d, now).length > 0) days.push(d);
+    if (freeSlots(d, now, taken).length > 0) days.push(d);
   }
   return days;
 }

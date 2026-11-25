@@ -9,7 +9,7 @@ export function Footer() {
         <div>
           <p className="font-mono text-lg font-bold tracking-widest">{SITE.name.toUpperCase()}</p>
           <p className="mt-3 max-w-xs text-sm text-muted-foreground">
-            Ремонт и обслуживание автомобилей в Индустриальном районе Краснодара.
+            Ремонт АКПП, DSG, вариаторов, PowerShift и раздаточных коробок в Краснодаре.
           </p>
         </div>
         <div>
@@ -33,7 +33,13 @@ export function Footer() {
       </div>
       <div className="border-t border-border">
         <div className="mx-auto flex max-w-7xl flex-col gap-2 px-5 py-5 font-mono text-xs text-muted-foreground sm:flex-row sm:justify-between">
-          <span>© {new Date().getFullYear()} {SITE.name}</span>
+          <span className="flex flex-wrap items-baseline gap-x-3">
+            <span>© {new Date().getFullYear()} {SITE.name}</span>
+            <span className="whitespace-nowrap">
+              <span className="font-script text-xl text-primary-glow">by</span>{" "}
+              <span className="text-ember-gradient font-display text-sm font-bold tracking-[0.25em]">SARZHEVSKIY</span>
+            </span>
+          </span>
           <div className="flex gap-6">
             <Link to="/uslugi" className="hover:text-foreground">Услуги</Link>
             <Link to="/kontakty" className="hover:text-foreground">Контакты</Link>

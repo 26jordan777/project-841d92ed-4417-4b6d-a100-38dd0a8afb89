@@ -9,7 +9,7 @@ export function CallBanner() {
       <div className="bg-grid absolute inset-0 opacity-60" />
       <div className="relative mx-auto flex max-w-7xl flex-col gap-8 px-5 py-16 md:flex-row md:items-center md:justify-between">
         <div>
-          <p className="eyebrow">Запись на ремонт</p>
+          <p className="eyebrow">Запись на диагностику и ремонт</p>
           <h2 className="mt-3 text-3xl font-bold md:text-4xl">
             Выберите удобное время<br className="hidden sm:block" /> онлайн или по телефону
           </h2>

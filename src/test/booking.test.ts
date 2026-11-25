@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { availableSlots, bookableDays, normalizePhone, slotsForDate } from "@/lib/booking";
+import { availableSlots, bookableDays, freeSlots, isSlotFree, normalizePhone, slotsForDate } from "@/lib/booking";
 
 // 2026-11-17 is a Tuesday. 10:30 Krasnodar time = 07:30 UTC.
 const tuesdayMorning = new Date("2026-11-17T07:30:00Z");
@@ -9,17 +9,17 @@ describe("online booking rules", () => {
     expect(slotsForDate("2026-11-22")).toEqual([]);
   });
 
-  it("offers 9:00–19:00 slots on weekdays (closes at 20:00)", () => {
-    const s = slotsForDate("2026-11-18");
-    expect(s[0]).toBe("09:00");
-    expect(s.at(-1)).toBe("19:00");
-    expect(s).toHaveLength(11);
+  it("has no slots on Saturday (day off)", () => {
+    expect(slotsForDate("2026-11-21")).toEqual([]);
   });
 
-  it("offers 10:00–17:00 slots on Saturday (closes at 18:00)", () => {
-    const s = slotsForDate("2026-11-21");
+  it("offers 10:00–18:00 slots on weekdays (open 10:00, closes at 19:00)", () => {
+    const s = slotsForDate("2026-11-18");
     expect(s[0]).toBe("10:00");
-    expect(s.at(-1)).toBe("17:00");
+    expect(s.at(-1)).toBe("18:00");
+    expect(s).toHaveLength(9);
+    expect(s).not.toContain("09:00");
+    expect(s).not.toContain("19:00");
   });
 
   it("hides slots that already passed today", () => {
@@ -34,8 +34,10 @@ describe("online booking rules", () => {
     expect(availableSlots("2026-12-01", tuesdayMorning).length).toBeGreaterThan(0);
   });
 
-  it("never lists Sundays as bookable days", () => {
+  it("never lists Saturdays or Sundays as bookable days", () => {
+    expect(bookableDays(tuesdayMorning)).not.toContain("2026-11-21");
     expect(bookableDays(tuesdayMorning)).not.toContain("2026-11-22");
+    expect(bookableDays(tuesdayMorning)).toContain("2026-11-20");
   });
 
   it("normalises Russian phone numbers", () => {
@@ -43,5 +45,24 @@ describe("online booking rules", () => {
     expect(normalizePhone("+7 900 123 45 67")).toBe("+79001234567");
     expect(normalizePhone("9001234567")).toBe("+79001234567");
     expect(normalizePhone("12345")).toBeNull();
+  });
+});
+
+describe("slot availability", () => {
+  const taken = { "2026-11-18": ["10:00", "14:00"] };
+
+  it("does not offer a time another client already booked", () => {
+    const s = freeSlots("2026-11-18", tuesdayMorning, taken);
+    expect(s).not.toContain("10:00");
+    expect(s).not.toContain("14:00");
+    expect(s).toContain("11:00");
+    expect(isSlotFree("2026-11-18", "14:00", tuesdayMorning, taken)).toBe(false);
+    expect(isSlotFree("2026-11-18", "15:00", tuesdayMorning, taken)).toBe(true);
+  });
+
+  it("hides a day once every slot on it is booked", () => {
+    const full = { "2026-11-18": slotsForDate("2026-11-18") };
+    expect(bookableDays(tuesdayMorning, full)).not.toContain("2026-11-18");
+    expect(bookableDays(tuesdayMorning, {})).toContain("2026-11-18");
   });
 });

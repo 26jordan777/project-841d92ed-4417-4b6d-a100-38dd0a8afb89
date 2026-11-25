@@ -1,24 +1,24 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, CalendarCheck, ShieldCheck, Clock, BadgeRussianRuble, Wrench } from "lucide-react";
+import { ArrowRight, CalendarCheck, Clock, BadgeRussianRuble, Cpu, Building2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { CallBanner } from "@/components/site/CallBanner";
-import { SERVICES, SITE } from "@/lib/site";
+import { FEATURED_SERVICES, SERVICES, SITE } from "@/lib/site";
 import heroImg from "@/assets/hero-garage.jpg";
 import engineImg from "@/assets/engine-work.jpg";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Перспектива Авто — автосервис в Индустриальном, Краснодар" },
+      { title: "Лаборатория АКПП — ремонт автоматических коробок в Краснодаре" },
       {
         name: "description",
         content:
-          "Ремонт и обслуживание автомобилей в Краснодаре, тер. Перспективная, 315. Диагностика, двигатель, ходовая, тормоза, ТО.",
+          "Ремонт АКПП, DSG, вариаторов CVT, PowerShift и раздаточных коробок в Краснодаре, ул. Щорса, 50/1. Диагностика от 2 500 ₽.",
       },
-      { property: "og:title", content: "Перспектива Авто — автосервис в Краснодаре" },
+      { property: "og:title", content: "Лаборатория АКПП — ремонт коробок передач в Краснодаре" },
       {
         property: "og:description",
-        content: "Диагностика, ремонт двигателя и ходовой, ТО. Индустриальный район, тер. Перспективная, 315.",
+        content: "Диагностика, прошивка, rebuild и ремонт АКПП, DSG, CVT. Краснодар, мкр. Центральный, ул. Щорса, 50/1.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -28,24 +28,24 @@ export const Route = createFileRoute("/")({
 });
 
 const STATS = [
-  { value: "8", label: "направлений ремонта" },
-  { value: "1 день", label: "на большинство работ" },
-  { value: "6 мес", label: "гарантия на работы" },
-  { value: "0 ₽", label: "консультация" },
+  { value: String(SERVICES.length), label: "видов работ" },
+  { value: "4 этапа", label: "диагностики коробки" },
+  { value: "от 2 500 ₽", label: "диагностика" },
+  { value: "AT · DSG · CVT", label: "и PowerShift" },
 ];
 
 const ADVANTAGES = [
   { icon: BadgeRussianRuble, title: "Цена до начала работ", text: "Согласуем смету заранее. Никаких доплат без вашего согласия." },
-  { icon: ShieldCheck, title: "Гарантия", text: "Даём гарантию на выполненные работы и установленные запчасти." },
+  { icon: Cpu, title: "Современное оборудование", text: "Компьютерная диагностика, замер давления и прошивка блоков управления." },
   { icon: Clock, title: "Без долгих очередей", text: "Записываем на конкретное время, чтобы вы не ждали." },
-  { icon: Wrench, title: "Свои запчасти — можно", text: "Работаем с запчастями клиента или подберём сами." },
+  { icon: Building2, title: "Работаем с юрлицами", text: "Договор, безналичная оплата с НДС или без, полный пакет документов." },
 ];
 
 const STEPS = [
   { n: "01", title: "Запись", text: "Оставляете заявку онлайн или звоните — подтверждаем время." },
-  { n: "02", title: "Диагностика", text: "Находим причину и называем стоимость." },
+  { n: "02", title: "Диагностика", text: "Проверяем масло, давление, электронику и коробку на ходу — называем стоимость." },
   { n: "03", title: "Ремонт", text: "Выполняем работы после согласования." },
-  { n: "04", title: "Выдача", text: "Показываем замененные детали, даём гарантию." },
+  { n: "04", title: "Выдача", text: "Проверяем работу коробки и показываем заменённые детали." },
 ];
 
 function Index() {
@@ -55,7 +55,7 @@ function Index() {
       <section className="relative isolate overflow-hidden">
         <img
           src={heroImg}
-          alt="Автомобиль на подъёмнике в автосервисе"
+          alt="Автомобиль на подъёмнике в сервисе по ремонту АКПП"
           width={1920}
           height={1088}
           className="absolute inset-0 -z-20 h-full w-full object-cover object-[65%_center]"
@@ -68,12 +68,12 @@ function Index() {
               {SITE.city} · {SITE.district}
             </p>
             <h1 className="mt-5 text-4xl font-extrabold leading-[1.05] sm:text-5xl md:text-7xl">
-              Ремонт авто
+              Ремонт АКПП
               <br />
               <span className="text-primary">без сюрпризов</span>
             </h1>
             <p className="mt-6 max-w-lg text-base text-muted-foreground md:text-lg">
-              Диагностика, ремонт двигателя и ходовой, ТО и шиномонтаж. Честная смета до начала работ.
+              Диагностика, прошивка и ремонт АКПП, DSG, вариаторов, PowerShift и раздаточных коробок. Честная смета до начала работ.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Button asChild variant="ember" size="xl">
@@ -111,18 +111,18 @@ function Index() {
         <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div>
             <p className="eyebrow">// Услуги</p>
-            <h2 className="mt-3 text-3xl font-bold md:text-5xl">Что мы делаем</h2>
+            <h2 className="mt-3 text-3xl font-bold md:text-5xl">Ремонт коробок передач</h2>
           </div>
           <Link
             to="/uslugi"
             className="inline-flex items-center gap-2 font-mono text-sm uppercase tracking-widest text-primary hover:underline"
           >
-            Все цены <ArrowRight className="h-4 w-4" />
+            Все услуги и цены <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
 
         <div className="mt-12 grid gap-px border border-border bg-border sm:grid-cols-2 lg:grid-cols-4">
-          {SERVICES.map((s) => (
+          {FEATURED_SERVICES.map((s) => (
             <article key={s.title} className="group bg-background p-6 transition-colors hover:bg-card">
               <s.icon className="h-8 w-8 text-primary transition-transform group-hover:-translate-y-1" />
               <h3 className="mt-6 text-lg font-bold leading-tight">{s.title}</h3>
@@ -139,7 +139,7 @@ function Index() {
           <div className="relative">
             <img
               src={engineImg}
-              alt="Мастер ремонтирует двигатель"
+              alt="Мастер за ремонтом агрегата"
               loading="lazy"
               width={1200}
               height={912}
